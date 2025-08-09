@@ -31,6 +31,7 @@ jobs:
             git
             groff
             m4
+            make
             patch
             unzip
             mingw-w64-ucrt-x86_64-pdcurses
@@ -53,7 +54,16 @@ jobs:
           ./autogen
           ./cfg-windows --prefix=/ --enable-relocatable-install
 
-      # Switch to Windows shell for MSBuild
+      - name: Install pthreads and build BrlapiMsvc.sln
+        shell: cmd
+        run: |
+          rem Install pthreads for x86 and x64
+          C:\vcpkg\vcpkg.exe install pthreads:x86-windows
+          C:\vcpkg\vcpkg.exe install pthreads:x64-windows
+
+          rem Run global integration so MSBuild picks up vcpkg libs automatically
+          C:\vcpkg\vcpkg.exe integrate install
+
       - name: Build BrlapiMsvc.sln for all platforms
         shell: cmd
         run: |
@@ -61,4 +71,3 @@ jobs:
           call "%VSINSTALLDIR%\Common7\Tools\VsDevCmd.bat" -no_logo
           msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x86"
           msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x64"
-          msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="ARM64"
