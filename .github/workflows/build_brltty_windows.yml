@@ -48,16 +48,17 @@ jobs:
 
       - name: Unzip BRLTTY source
         run: |
-          mkdir -p c:/mingw64/home/brltty
-          unzip BRLTTY-6.4.zip -d c:/mingw64/home/brltty
+          mkdir -p c:/MSYS64/home/brltty
+          unzip BRLTTY-6.4.zip -d c:/MSYS64/home/brltty
+          cd c:/MSYS64/home/brltty
 
       - uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build BrlapiMsvc for all platforms
         shell: cmd
         run: |
-          msbuild c:\mingw64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x86"
-          msbuild c:\mingw64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x64"
+          msbuild Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x86"
+          msbuild Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x64"
 
       - name: Configure build
         run: |
