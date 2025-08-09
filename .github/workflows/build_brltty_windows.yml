@@ -60,10 +60,6 @@ jobs:
           msbuild c:\MSYS64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x86"
           msbuild c:\MSYS64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x64"
 
-      - name: Configure build
-        run: |
-          ./cfg-windows --prefix=/ --enable-relocatable-install
-
       - name: Install pthreads and build BrlapiMsvc.sln
         shell: cmd
         run: |
@@ -72,3 +68,10 @@ jobs:
 
           rem Run global integration so MSBuild picks up vcpkg libs automatically
           C:\vcpkg\vcpkg.exe integrate install
+
+      - name: Configure build
+        run: |
+          cd c:/MSYS64/home/brltty
+          ./autogen
+          ./cfg-windows --prefix=/ --enable-relocatable-install
+
