@@ -11,7 +11,7 @@ on:
 
 jobs:
   build_brltty:
-    runs-on: windows-latest
+    runs-on: windows-2025
 
     defaults:
       run:
@@ -46,10 +46,8 @@ jobs:
 
       - name: Download BRLTTY source
         run: |
-          mkdir -p c:/mingw64/home/brltty
-          cd c:/mingw64/home/brltty
           curl -L -o BRLTTY-6.4.zip "https://3rdpartycodeprod.blob.core.windows.net/download/Brltty/V6.4/BRLTTY-6.4.zip?sv=2021-12-02&st=2025-08-09T07%3A41%3A15Z&se=2025-08-09T09%3A21%3A15Z&sr=b&sp=r&sig=bcKLL6lSjd%2F9h5BStC2rf7%2FxnukirY7zBnljz2qcxyE%3D"
-          unzip BRLTTY-6.4.zip
+          unzip BRLTTY-6.4.zip -d c:/mingw64/home/brltty
 
       - uses: ilammy/msvc-dev-cmd@v1
 
