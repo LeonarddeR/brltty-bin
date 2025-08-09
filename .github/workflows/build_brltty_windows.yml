@@ -49,25 +49,22 @@ jobs:
           curl -L -o BRLTTY-6.4.zip "https://3rdpartycodeprod.blob.core.windows.net/download/Brltty/V6.4/BRLTTY-6.4.zip?sv=2021-12-02&st=2025-08-09T07%3A41%3A15Z&se=2025-08-09T09%3A21%3A15Z&sr=b&sp=r&sig=bcKLL6lSjd%2F9h5BStC2rf7%2FxnukirY7zBnljz2qcxyE%3D"
           unzip BRLTTY-6.4.zip
 
+      - name: Build BrlapiMsvc.sln for all platforms
+        uses: ilammy/msvc-dev-cmd@v1
+        run: |
+          cd Windows\msvc\BrlapiMsvc
+          msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x86"
+          msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x64"
+
       - name: Configure build
         run: |
-          ./autogen
           ./cfg-windows --prefix=/ --enable-relocatable-install
 
       - name: Install pthreads and build BrlapiMsvc.sln
         shell: cmd
         run: |
           rem Install pthreads for x86 and x64
-          C:\vcpkg\vcpkg.exe install pthreads:x86-windows
-          C:\vcpkg\vcpkg.exe install pthreads:x64-windows
+          C:\vcpkg\vcpkg.exe install pthreads:x86-windows pthreads:x64-windows
 
           rem Run global integration so MSBuild picks up vcpkg libs automatically
           C:\vcpkg\vcpkg.exe integrate install
-
-      - name: Build BrlapiMsvc.sln for all platforms
-        shell: cmd
-        run: |
-          cd Windows\msvc\BrlapiMsvc
-          call "%VSINSTALLDIR%\Common7\Tools\VsDevCmd.bat" -no_logo
-          msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x86"
-          msbuild BrlapiMsvc.sln /p:Configuration=Release /p:Platform="x64"
