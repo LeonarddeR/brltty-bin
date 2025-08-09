@@ -47,7 +47,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Unzip BRLTTY source
-        run: unzip BRLTTY-6.4.zip -d c:/mingw64/home/brltty
+        run: |
+          mkdir -p c:/mingw64/home/brltty
+          unzip BRLTTY-6.4.zip -d c:/mingw64/home/brltty
 
       - uses: ilammy/msvc-dev-cmd@v1
 
