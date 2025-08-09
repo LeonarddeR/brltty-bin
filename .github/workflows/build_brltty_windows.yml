@@ -57,8 +57,8 @@ jobs:
       - name: Build BrlapiMsvc for all platforms
         shell: cmd
         run: |
-          msbuild Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x86"
-          msbuild Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x64"
+          msbuild c:\MSYS64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x86"
+          msbuild c:\MSYS64\home\brltty\Windows\msvc\BrlapiMsvc\BrlapiMsvc.sln /p:Platform="x64"
 
       - name: Configure build
         run: |
