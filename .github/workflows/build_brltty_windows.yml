@@ -1,0 +1,56 @@
+name: build BRLTTY for Windows
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  build_brltty:
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Set up MSYS environment
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: >-
+            autoconf
+            automake
+            tcl
+            awk
+            bison
+            git
+            groff
+            m4
+            patch
+            unzip
+            mingw-w64-ucrt-x86_64-pdcurses
+            mingw-w64-ucrt-x86_64-icu
+            mingw-w64-ucrt-x86_64-tcl
+            mingw-w64-ucrt-x86_64-winpthreads-git
+            mingw-w64-ucrt-x86_64-libiconv
+            mingw-w64-ucrt-x86_64-toolchain
+            mingw-w64-ucrt-x86_64-python
+            mingw-w64-ucrt-x86_64-python-setuptools
+            mingw-w64-ucrt-x86_64-cython
+
+      - name: Download BRLTTY source
+        run: |
+          curl -L -o BRLTTY-6.4.zip "https://3rdpartycodeprod.blob.core.windows.net/download/Brltty/V6.4/BRLTTY-6.4.zip?sv=2021-12-02&st=2025-08-09T07%3A41%3A15Z&se=2025-08-09T09%3A21%3A15Z&sr=b&sp=r&sig=bcKLL6lSjd%2F9h5BStC2rf7%2FxnukirY7zBnljz2qcxyE%3D"
+          unzip BRLTTY-6.4.zip
+          cd BRLTTY-6.4
+
+      - name: Configure build
+        run: |
+          cd BRLTTY-6.4
+          ./autogen
+          ./cfg-windows --prefix=/ --enable-relocatable-install
